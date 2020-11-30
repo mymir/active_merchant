@@ -236,6 +236,32 @@ module ActiveMerchant #:nodoc:
         post[:additionalData][:subMerchantCountry] = options[:sub_merchant_country] if options[:sub_merchant_country]
         post[:additionalData][:subMerchantTaxId] = options[:sub_merchant_tax_id] if options[:sub_merchant_tax_id]
         post[:additionalData][:subMerchantMCC] = options[:sub_merchant_mcc] if options[:sub_merchant_mcc]
+        add_seller_data(post, options) if options[:number_of_sub_sellers]
+      end
+
+      def add_seller_data(post, options)
+        post[:subMerchant] ||= {}
+        post[:subMerchant][:numberOfSubSellers] = options[:number_of_sub_sellers] if options[:number_of_sub_sellers]
+        options[:number_of_sub_sellers].to_i.times do |n|
+          post[:subMerchant][:"subSeller#{n+1}"] ||= {}
+          post[:subMerchant][:"subSeller#{n+1}"][:id] = options[:"sub_seller_#{n+1}"][:id] if options[:"sub_seller_#{n+1}"][:id]
+          post[:subMerchant][:"subSeller#{n+1}"][:name] = options[:"sub_seller_#{n+1}"][:name] if options[:"sub_seller_#{n+1}"][:name]
+          post[:subMerchant][:"subSeller#{n+1}"][:street] = options[:"sub_seller_#{n+1}"][:street] if options[:"sub_seller_#{n+1}"][:street]
+          post[:subMerchant][:"subSeller#{n+1}"][:postalCode] = options[:"sub_seller_#{n+1}"][:postal_code] if options[:"sub_seller_#{n+1}"][:postal_code]
+          post[:subMerchant][:"subSeller#{n+1}"][:city] = options[:"sub_seller_#{n+1}"][:city] if options[:"sub_seller_#{n+1}"][:city]
+          post[:subMerchant][:"subSeller#{n+1}"][:state] = options[:"sub_seller_#{n+1}"][:state] if options[:"sub_seller_#{n+1}"][:state]
+          post[:subMerchant][:"subSeller#{n+1}"][:country] = options[:"sub_seller_#{n+1}"][:country] if options[:"sub_seller_#{n+1}"][:country]
+          post[:subMerchant][:"subSeller#{n+1}"][:taxId] = options[:"sub_seller_#{n+1}"][:tax_id] if options[:"sub_seller_#{n+1}"][:tax_id]
+          post[:subMerchant][:"subSeller#{n+1}"][:mcc] = options[:"sub_seller_#{n+1}"][:mcc] if options[:"sub_seller_#{n+1}"][:mcc]
+          post[:subMerchant][:"subSeller#{n+1}"][:debitSettlementBank] = options[:"sub_seller_#{n+1}"][:debit_settlement_bank] if options[:"sub_seller_#{n+1}"][:debit_settlement_bank]
+          post[:subMerchant][:"subSeller#{n+1}"][:debitSettlementAgency] = options[:"sub_seller_#{n+1}"][:debit_settlement_agency] if options[:"sub_seller_#{n+1}"][:debit_settlement_agency]
+          post[:subMerchant][:"subSeller#{n+1}"][:debitSettlementAccountType] = options[:"sub_seller_#{n+1}"][:debit_settlement_account_type] if options[:"sub_seller_#{n+1}"][:debit_settlement_account_type]
+          post[:subMerchant][:"subSeller#{n+1}"][:debitSettlementAccount] = options[:"sub_seller_#{n+1}"][:debit_settlement_account] if options[:"sub_seller_#{n+1}"][:debit_settlement_account]
+          post[:subMerchant][:"subSeller#{n+1}"][:creditSettlementBank] = options[:"sub_seller_#{n+1}"][:credit_settlement_bank] if options[:"sub_seller_#{n+1}"][:credit_settlement_bank]
+          post[:subMerchant][:"subSeller#{n+1}"][:creditSettlementAgency] = options[:"sub_seller_#{n+1}"][:credit_settlement_agency] if options[:"sub_seller_#{n+1}"][:credit_settlement_agency]
+          post[:subMerchant][:"subSeller#{n+1}"][:creditSettlementAccountType] = options[:"sub_seller_#{n+1}"][:credit_settlement_account_type] if options[:"sub_seller_#{n+1}"][:credit_settlement_account_type]
+          post[:subMerchant][:"subSeller#{n+1}"][:creditSettlementAccount] = options[:"sub_seller_#{n+1}"][:credit_settlement_account] if options[:"sub_seller_#{n+1}"][:credit_settlement_account]
+        end
       end
 
       def add_risk_data(post, options)
